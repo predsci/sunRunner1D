@@ -1,7 +1,5 @@
 #!/Users/pete/miniconda3/envs/psi/bin/python
 
-
-
 import sys
 import os
 import getopt
@@ -243,7 +241,6 @@ def main(argv):
 	# Run Pluto
 	#
 
-   
 	os.chdir('runs/')
 	os.system('chmod -R 777 *')
 	os.chdir(wdir)
@@ -251,11 +248,16 @@ def main(argv):
 	print('\n\nRunning Pluto...For Progress see:\n\n')
 	print(os.getcwd()+'/out.txt')
 
+	# set this to skip the pluto run. Good for just diagnosing the output or
+	# changing the plotting routines.
 
-	with open('out.txt','w+') as fout:
-		with open('err.txt','w+') as ferr:
-			out=subprocess.call(["./pluto"],stdout=fout,stderr=ferr)
-   
+	skip_pluto = True
+
+	if skip_pluto != True: 
+		with open('out.txt','w+') as fout:
+			with open('err.txt','w+') as ferr:
+				out=subprocess.call(["./pluto"],stdout=fout,stderr=ferr)
+    
 	print('\n\n Run Completed Successfully \n\n')
 	print(' Output Files saved at: \n')
 	print(os.getcwd()+'\n')

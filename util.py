@@ -193,8 +193,41 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	xlabel(r'Time [hours]')
 	ylabel(r'v$_{r}$ [km/s]')
 
+    #--------------------------------------------------
+    
+    # a short digression to calculate the time of arrival (ToA) of 
+    # the shock at 1 AU. This should probably be done somewhere 
+    # else or, even better, wrapped up into a separate function...but
+
+	# Ideally, this should probably include calculations of the 
+	# jump conditions, but since it's a 1-D solution, we know that 
+	# the solar wind is constant at 1 AU until the arrival of the disturbance. 
+	# If it's a fast CME, then the first perturbation will be the arrival
+	# of the forward shock. So, any reasonably sharp increase in 
+	# solar wind speed should act to capture it. We'll call that 
+	# threshold dv_crit. 
+
+	dv_crit = 20.
+
+	dv = ydata[1:itmax] - ydata[0:(itmax-1)]
+	print("max(dv):",np.max(dv))
+	ishock = np.min(np.where(dv > dv_crit))
+
+	print("Shock time: ", time_1au[ishock])
+	ax1.axvline(x = time_1au[ishock], color = 'red', linestyle = '--')
+	ax1.text(time_1au[ishock],600,"Shock ToA: "+str(round(time_1au[ishock] - 200,2))+" hours")
+
+	# And also calculate and print the ambient values 
+	# of the solar wind
+
+	iamb = np.min(np.where(time_1au > 210))
+	print("V_amb: ", ydata[iamb])
+	ax1.text(225,1.05*ydata[iamb],"$v_{amb}$: "+str(round(ydata[iamb],2))+" km/s")
+
+    #--------------------------------------------------
+
 	ax1 = f1.add_subplot(412)
-	ydata_new = np.array(np1au) 
+	ydata = np.array(np1au) 
 	ax1.plot(time_1au, ydata, color = 'green')
 	ax1.axvline(x = cme_start_time, color = 'grey', linestyle = '--')
 	ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
@@ -205,6 +238,10 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	ylabel(r'n [$cm^{-3}$]')
 	xlim([tmin,tmax])
 	ylim([0.9*ymin, 1.1*ymax])
+	ax1.axvline(x = time_1au[ishock], color = 'red', linestyle = '--')
+
+	print("n_amb: ", ydata[iamb])
+	ax1.text(225,1.1*ydata[iamb],"$n_{amb}$: "+str(round(ydata[iamb],2))+" cm$^{-3}$")
 
 	ax1 = f1.add_subplot(413)
 	ydata = np.array(bp1au) 
@@ -217,6 +254,10 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	ylabel(r'B$_{\rm \phi}$ [nT]')
 	xlim([tmin,tmax])
 	ylim([0.9*ymin, 1.1*ymax])
+	ax1.axvline(x = time_1au[ishock], color = 'red', linestyle = '--')
+
+	print("Bp_amb: ", ydata[iamb])
+	ax1.text(225,1.1*ydata[iamb],"$Bp_{amb}$: "+str(round(ydata[iamb],2))+" nT")
 
 	ax1 = f1.add_subplot(414)
 	ydata = np.array(t1au) 
@@ -230,6 +271,11 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	ylabel(r'T [K]')
 	xlim([tmin,tmax])
 	ylim([0.9*ymin, 1.1*ymax])
+	ax1.axvline(x = time_1au[ishock], color = 'red', linestyle = '--')
+
+	print("T_amb: ", ydata[iamb])
+	ax1.text(225,1.1*ydata[iamb],"$T_{amb}$: "+str(round(ydata[iamb],2))+" K")
+
 	plt.savefig(filename)
 	#plt.show()
 	plt.clf()
