@@ -135,7 +135,7 @@ def plot_vars_at_r0(df, cme_start_time, cme_duration, filename):
 	ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
 	xlim([tmin,tmax])
 	xlabel(r'Time [hours]')
-	ylabel(r'n [$cm^3$]')
+	ylabel(r'n [$cm^{-3}$]')
 	title("Time Profile of Density Perturbation at Inner Boundary")
 	ax1.grid(which='major',axis='y')
 	plt.savefig(filename)
