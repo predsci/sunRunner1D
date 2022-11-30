@@ -105,10 +105,10 @@ def main(argv):
 
 	
 	try:
-		opts, args = getopt.getopt(argv,"h:r:g:l:t:c:s:m:v:b:n:d:p:",["help=","run=","grid=","r1=","t0=","rho0=","v0=","bp0=","dv=","db=","dn=","dur=","profile="])
+		opts, args = getopt.getopt(argv,"h:r:g:l:t:c:s:m:v:b:n:d:p:",["help=","run=","grid=","r1=","t0=","rho0=","v0=","bp0=","dv=","db=","dn=","dur=","prof="])
 	except getopt.GetoptError:
 		print("\nWrong key word please use:\n")		
-		print('sunRunner1D.py --run <run_name> --grid <grid_size> --r1 <grind_extent> --t0 <t0> --rho0 <rho0> --v0 <v0> --bp0 <bp0> --dv <del_V> --db <del_Bp> --dn <del_rho> --dur <duration> --profile <profile>')
+		print('sunRunner1D.py --run <run_name> --grid <grid_size> --r1 <grind_extent> --t0 <t0> --rho0 <rho0> --v0 <v0> --bp0 <bp0> --dv <del_V> --db <del_Bp> --dn <del_rho> --dur <duration> --prof <profile>')
 		sys.exit(2)
 
 
