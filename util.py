@@ -202,7 +202,7 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	ymin=min(ydata[itmin:itmax])
 	ymax=max(ydata[itmin:itmax])        
 	xlabel(r'Time [hours]')
-	ylabel(r'n [$cm^3$]')
+	ylabel(r'n [$cm^{-3}$]')
 	xlim([tmin,tmax])
 	ylim([0.9*ymin, 1.1*ymax])
 
