@@ -45,3 +45,39 @@ In general, to fully specify all parameters, call sunRunner.py with the followin
 As an example, and the one that is included in the repository (as run001), type:
 
 ./sunRunner1D.py --run run001 --grid medium --r1 260 --dv 4000 --db 500 --dn 0 --dur 12 --prof 0
+
+
+PLUTO INSTALLATION
+
+The sunRunner1D tool is based on the PLUTO code. 
+
+Hence PLUTO must first be downloaded and installed from here:
+
+http://plutocode.ph.unito.it/
+
+If you are not familiar with the PLUTO code we recommend that you spend time reading the manual and running the examples. If you would like to understand how the boundary conditions (BC) can be defined please see chapter 5 of the PLUTO manual.  
+
+
+COMPILING PLUTO FOR sunRunner1D
+
+We have made modifications to only two of the PLUTO routines: init.c and userdef_output.c These routines along with the required definitions.h file are in the 'src' sub-directory.  To compile the PLUTO code for sunRunner1D please go to the src sub-directory:
+
+% cd src
+
+Invoke the PLUTO setup.py script (see Section 1.3 in the PLUTO manual)
+
+%  python $PLUTO_DIR/setup.py
+
+Once you are done with this configuration setup you will see a makefile and sysconf.out file that are specific to your computer platform (we recommend selecting the gcc compiler in setup.py) and you can now compile PLUTO:
+
+%make 
+
+Clean the directory:
+
+%make clean
+
+And go back to the directory with the sunRunner1D.py script
+
+%cd ..
+
+
