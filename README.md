@@ -1,12 +1,12 @@
 # sunRunner1D
 
-Welcome to sunRunner1D 0.00002 (2022-11-29). This is a 1D MHD calculation of a CME pulse propagating (and evolving) through an ambient solar wind, state of which can be specified by the user. The version provided here has been compiled on a Mac (and the executable should run on most of the recent versions of the OS, including Ventura). If you plan to run on a Linux computer or Windows, you will need to recompile the Pluto code, which is in the src directory (see the makefile for more information). 
+Welcome to sunRunner1D. This is a 1D MHD calculation of a CME pulse propagating (and evolving) through an ambient solar wind, state of which can be specified by the user. The version provided here has been compiled on a Mac (and the executable should run on most of the recent versions of the OS, including Ventura). If you plan to run on a Linux computer or Windows, you will need to recompile the Pluto code, which is in the src directory (See instructions below). 
 
 For a run, you need to provide, at a minimum: 
 
 1.  <run name>, e.g. run001 
 2. Number of grid points: ‘low’ - 500, ‘medium’ - 1000, ‘high’ - 2000 
-3. Outer boundary (in solar radii) - default is ~257 Rs
+3. Outer boundary (in solar radii) - default is 260 Rs
 4. CME parameters at 21.5Rs 
 
 a. Velocity pulse, default 500 km/s (dv)
@@ -51,7 +51,7 @@ PLUTO INSTALLATION
 
 The sunRunner1D tool is based on the PLUTO code. 
 
-Hence PLUTO must first be downloaded and installed from here:
+Hence, PLUTO must first be downloaded and installed from here:
 
 http://plutocode.ph.unito.it/
 
@@ -80,9 +80,9 @@ And go back to the directory with the sunRunner1D.py script
 
 %cd ..
 
-You are now ready to use the script
+You are now ready to use the script.
 
 Please note that the jupyter notebook in the repository is currently not supported and not up-to-date
    
-For HELP please email us at: pete@predsci.com, mbennun@predsci.com
+For help, please email us at: pete@predsci.com, mbennun@predsci.com
    
