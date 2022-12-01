@@ -1,11 +1,8 @@
-#!/Users/pete/miniconda3/envs/psi/bin/python
+#!/Users/michal/miniconda3/envs/psi/bin/python
 
 import sys
 import os
 import getopt
-#import glob
-#import time
-#import datetime
 import shutil
 import subprocess
 from util import *
@@ -19,14 +16,14 @@ print(' Welcome to sunRunner1D 0.00001 (04/07/21) ')
 print(' This is a 1D MHD calculation with a simple CME ')
 print(' You will need to provide a <run name>, e.g. run001 ')
 print(' Number of grid points: ')
-print(' 	low - 500, medium - 1000, large - 2000 ')
+print(' 	low - 500, medium - 1000, high - 2000 ')
 print(' Outer boundary (in Rs units) default is ~257 Rs')
 print(' You will also need to provide the CME parameters at 30Rs ')
 print(' Currently the CME has a sin^2 shape but the ')
 print(' magnetic field pulse can be set to have a sin shape ')
 print(' with half the period so that is has an alternating sign ')
 print(' User provided pulse parameters: ')
-print(' Velocity pulse, default 2000 km/s ')
+print(' Velocity pulse, default 500 km/s ')
 print(' Magnetic Field (Bp) pulse, default 600 nT ')
 print(' Density pulse, default is 0.0 cm^-3 ')
 print(' Duration of pulse, default is 10 hours ')
@@ -39,27 +36,21 @@ print(' ./sunRunner1D.py -h')
 print(' Usage: ')
 print(' ./sunRunner1D.py --run <run_name> --grid <grid_size> --r1 <R1> --t0 <t0> --rho0 <rho0> --v0 <v0> --bp0 <bp0> --dv <del_V> --db <del_Bp> --dn <del_rho> --dur <duration> --prof <profile>')
 print(' Example Usage: ')
-print(' ./sunRunner1D.py --run run001 --grid medium --r1 260 --dv 4000 --db 500 --dn 0 --dur 12 --prof 0')
+print(' ./sunRunner1D.py --run run001 --grid medium --r1 260 --dv 1000 --db 500 --dn 0 --dur 12 --prof 0')
 print('################################################')
 print('################################################')
 
 def main(argv):
 
 
-	template_file='cfg/pluto_cfg.ini'
+	template_file='src/pluto_cfg.ini'
 
-	run_file = 'cfg/pluto.ini'
+	run_file = 'src/pluto.ini'
 
 	##########################################################################
 	#
-	# check to see if we already have this file if so rename with a time stamp
+	# Conversion Factors
 	#
-
-	#file_list = glob.glob(run_file)
-	#ts = time.time()
-	#readable_ts = datetime.datetime.fromtimestamp(ts).isoformat()
-	#if len(file_list) > 0:
-	#	os.rename(run_file, run_file+str(readable_ts))
 
 	# To convert from PLUTO time units to hours
 
@@ -79,27 +70,27 @@ def main(argv):
 
 	run_name='run001'
 	
-	grid='low'
+	grid='medium'
+
 	r1=1.2 * r_fac_pluto # out boundary ~ 257 Rs 
 
-	del_V = 2000.0
+	# Perturbation at inner boundary
+
+	del_V = 500.0
 	del_B = 600.0 # in nT will be converted below to PLUTO units
 	del_RHO=0.0
 	dur = 10.0
 	prof = 0
 
-	# default background values 
-	T_0 = 1.0e6
-	BP_0 = 400.0 * b_fac_pluto # this is the default value in nT will be converted below to PLUTO units
-	V_0 = 300.0
-	RHO_0 = 600.0 
+	# default background values at inner boundary 
 
-	dict_grid={'low': 500, 'medium': 1000, 'large': 2000}
+	T_0 = 1.250e6
+	BP_0 = 1000.0 * b_fac_pluto # this is the default value in nT will be converted below to PLUTO units
+	V_0 = 300.0
+	RHO_0 = 500.0 
+
+	dict_grid={'low': 500, 'medium': 1000, 'high': 2000}
 	ngrid=dict_grid[grid]
-	# Need to come up with letters for rho0 v0 and bp0 can not be r,v,b,n,d
-	# use rho0 - c
-	# use v0 - s	
-	# use bp0 - m
 
 	
 	try:
@@ -154,7 +145,7 @@ def main(argv):
 
 	##########################################################################
 	#
-	# Read template pluto_cfg.ini file and write pluto.ini with run parameters
+	# Read template src/pluto_cfg.ini file and write src/pluto.ini with run parameters
 	#
 
 	dict_replace = {'T_0': T_0, 'RHO_0': RHO_0, 'V_0': V_0, 'BP_0': BP_0, 'RHO_PERT': del_RHO, 'X1-grid': ngrid, 
@@ -181,7 +172,7 @@ def main(argv):
 						newline = newline.lstrip()
 					newline = newline+'\n'
 					if (sub == 'X1-grid'):
-						newline='X1-grid    1  0.13 '+str(dict_replace[sub])+' u  '+str(r1)+'\n'
+						newline='X1-grid    1  0.1000465 '+str(dict_replace[sub])+' u  '+str(r1)+'\n'
 
 			out_file.writelines(newline)
 
@@ -220,12 +211,12 @@ def main(argv):
 	# to PLUTO run directory 
 	#
 
-	src_path = os.getcwd()+'/cfg/'
+	src_path = os.getcwd()+'/src/'
 	dst_path = os.getcwd() + '/runs/'+wdir
 
 	pluto_ini_org = src_path+'pluto.ini'
 	pluto_def_org = src_path+'definitions.h'
-	pluto_exe_org = os.getcwd()+'/bin/pluto'
+	pluto_exe_org = src_path+'pluto'
 
 	pluto_ini_dst = dst_path+'/pluto.ini'
 	pluto_def_dst = dst_path+'/definitions.h'
@@ -251,7 +242,7 @@ def main(argv):
 	# set this to skip the pluto run. Good for just diagnosing the output or
 	# changing the plotting routines.
 
-	skip_pluto = True
+	skip_pluto = False
 
 	if skip_pluto != True: 
 		with open('out.txt','w+') as fout:
@@ -285,7 +276,7 @@ def main(argv):
 
 	plot_file = dst_path+'/'+'vars_1au.png'
 
-	print('\nSaving Plot of Variables at R=1AU', plot_file)
+	print('\nSaving Plot of Variables at R=1AU', plot_file, '\n')
 
 	plot_vars_at_1au(df_1au, cme_start_time, cme_duration, plot_file)
 

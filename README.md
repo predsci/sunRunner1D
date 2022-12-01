@@ -5,11 +5,11 @@ Welcome to sunRunner1D 0.00002 (2022-11-29). This is a 1D MHD calculation of a C
 For a run, you need to provide, at a minimum: 
 
 1.  <run name>, e.g. run001 
-2. Number of grid points: ‘low’ - 500, ‘medium’ - 1000, ‘large’ - 2000 
+2. Number of grid points: ‘low’ - 500, ‘medium’ - 1000, ‘high’ - 2000 
 3. Outer boundary (in solar radii) - default is ~257 Rs
-4. CME parameters at 30Rs 
+4. CME parameters at 21.5Rs 
 
-a. Velocity pulse, default 2000 km/s (dv)
+a. Velocity pulse, default 500 km/s (dv)
 b. Magnetic Field (Bp) pulse, default 600 nT (db)
 c. Density pulse, default is 0.0 cm^-3 (dn)
 d. Duration of pulse, default is 10 hours (dur)
@@ -17,7 +17,7 @@ e. Profile shape for magnetic field pulse (prof):
    0 = sin^2 (default) 
    1 = half-sine wave
 
-Additionally, you can specify the conditions of the ambient solar wind at the inner boundary (30 Rs). So, if you are trying to match values observed at 1 AU, you may need to adjust them slightly to make them match better. These parameters are:
+Additionally, you can specify the conditions of the ambient solar wind at the inner boundary (21.5 Rs). So, if you are trying to match values observed at 1 AU, you may need to adjust them slightly to make them match better. These parameters are:
 
 v0 - speed
 rho0 - density
@@ -64,7 +64,7 @@ We have made modifications to only two of the PLUTO routines: init.c and userdef
 
 % cd src
 
-Invoke the PLUTO setup.py script (see Section 1.3 in the PLUTO manual)
+Invoke the PLUTO setup.py script (see Section 1.3 in the PLUTO manual) using:
 
 %  python $PLUTO_DIR/setup.py
 
@@ -79,5 +79,8 @@ Clean the directory:
 And go back to the directory with the sunRunner1D.py script
 
 %cd ..
+
+You are now ready to use the script
+
 
 

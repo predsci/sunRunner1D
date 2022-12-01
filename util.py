@@ -48,14 +48,6 @@ def read_cme_params(pluto_ini_file):
 	return start, dur
 
 
-# def read_obs_r0_dat(obs_file):
-# 	""" read observer file at inner boundary and convert units to hours nT"""
-
-# 	df = pd.read_table(obs_file,delim_whitespace=True, skiprows=1)
-# 	df['time'] = df['time'] * time_fac_pluto
-# 	df['Bp']   = df['Bp'] * b_fac_pluto
-
-# 	return (df)
 
 def read_obs_dat(obs_file):
 	""" read observer file and convert units to hours nT"""
@@ -83,6 +75,16 @@ def plot_vars_at_r0(df, cme_start_time, cme_duration, filename):
 	tr0 = df['temp']
 
 	cme_end_time = cme_start_time + cme_duration
+
+
+    # time zero will be set to cme_start_time
+
+	time_zero = cme_start_time
+	cme_start_time = cme_start_time - time_zero
+	cme_end_time   = cme_end_time  - time_zero
+
+	time = [mytime - time_zero for mytime in time]
+
 
 	#########################################################################
 	#
@@ -155,6 +157,15 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	t1au  = df['temp']
 
 	cme_end_time = cme_start_time + cme_duration
+
+	# time zero will be set to cme_start_time
+
+	time_zero = cme_start_time
+	cme_start_time = cme_start_time - time_zero
+	cme_end_time   = cme_end_time  - time_zero
+
+	time = [mytime - time_zero for mytime in time]
+
 	#########################################################################
 	#
 	# Find the time range we should use for the plot
@@ -164,10 +175,9 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	
 	time_max = time[imax] # This is the time that Vr has a maximum
 
-	# find index of CME start time - start plotting a little before
+	# find index of CME start time 
 	itmin, time_min = find_nearest(time, cme_start_time)
 
-	itmin = itmin - 10
 
 	itmax = len(time)-1   
 	tmin = round(time[itmin])
@@ -184,8 +194,8 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	time_1au = np.array(time)
 	ydata = np.array(vr1au) 
 	ax1.plot(time_1au, ydata, color = 'red')
-	ax1.axvline(x = cme_start_time, color = 'grey', linestyle = '--')
-	ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
+	#ax1.axvline(x = cme_start_time, color = 'grey', linestyle = '--')
+	#ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
 	ymin=min(ydata[itmin:itmax])
 	ymax=max(ydata[itmin:itmax])     
 	xlim([tmin,tmax])
@@ -207,30 +217,33 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	# solar wind speed should act to capture it. We'll call that 
 	# threshold dv_crit. 
 
+	color_shock = 'black'
+
 	dv_crit = 20.
 
-	dv = ydata[1:itmax] - ydata[0:(itmax-1)]
-	print("max(dv):",np.max(dv))
-	ishock = np.min(np.where(dv > dv_crit))
+	dv = ydata[itmin:itmax] - ydata[(itmin-1):(itmax-1)]
 
-	print("Shock time: ", time_1au[ishock])
-	ax1.axvline(x = time_1au[ishock], color = 'red', linestyle = '--')
-	ax1.text(time_1au[ishock],600,"Shock ToA: "+str(round(time_1au[ishock] - 200,2))+" hours")
+	print("max(dv):",ymax - ymin)
+	ishock = np.min(np.where(dv > dv_crit))+itmin-1
+
+	ax1.axvline(x = time_1au[ishock], color = color_shock, linestyle = '--')
+	ax1.text(time_1au[ishock]*1.05,1.5*ymin,"Shock ToA: "+str(round(time_1au[ishock],2))+" hours")
 
 	# And also calculate and print the ambient values 
-	# of the solar wind
+	# of the solar wind - use the start time of the CME for that
 
-	iamb = np.min(np.where(time_1au > 210))
+	
+	iamb = itmin #np.min(np.where(time_1au > 210))
 	print("V_amb: ", ydata[iamb])
-	ax1.text(225,1.05*ydata[iamb],"$v_{amb}$: "+str(round(ydata[iamb],2))+" km/s")
+	ax1.text(cme_end_time,1.1*ydata[iamb],"$v_{amb}$: "+str(round(ydata[iamb],2))+" km/s")
 
     #--------------------------------------------------
 
 	ax1 = f1.add_subplot(412)
 	ydata = np.array(np1au) 
 	ax1.plot(time_1au, ydata, color = 'green')
-	ax1.axvline(x = cme_start_time, color = 'grey', linestyle = '--')
-	ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
+	#ax1.axvline(x = cme_start_time, color = 'grey', linestyle = '--')
+	#ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
 	yscale('log')
 	ymin=min(ydata[itmin:itmax])
 	ymax=max(ydata[itmin:itmax])        
@@ -238,32 +251,32 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	ylabel(r'n [$cm^{-3}$]')
 	xlim([tmin,tmax])
 	ylim([0.9*ymin, 1.1*ymax])
-	ax1.axvline(x = time_1au[ishock], color = 'red', linestyle = '--')
+	ax1.axvline(x = time_1au[ishock], color = color_shock, linestyle = '--')
 
 	print("n_amb: ", ydata[iamb])
-	ax1.text(225,1.1*ydata[iamb],"$n_{amb}$: "+str(round(ydata[iamb],2))+" cm$^{-3}$")
+	ax1.text(cme_end_time,1.15*ydata[iamb],"$n_{amb}$: "+str(round(ydata[iamb],2))+" cm$^{-3}$")
 
 	ax1 = f1.add_subplot(413)
 	ydata = np.array(bp1au) 
 	ax1.plot(time_1au, ydata, color = 'blue')
-	ax1.axvline(x = cme_start_time, color = 'grey', linestyle = '--')
-	ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
+	#ax1.axvline(x = cme_start_time, color = 'grey', linestyle = '--')
+	#ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
 	ymin=min(ydata[itmin:itmax])
 	ymax=max(ydata[itmin:itmax])         
 	xlabel(r'Time [hours]')
 	ylabel(r'B$_{\rm \phi}$ [nT]')
 	xlim([tmin,tmax])
-	ylim([0.9*ymin, 1.1*ymax])
-	ax1.axvline(x = time_1au[ishock], color = 'red', linestyle = '--')
+	ylim([0.8*ymin, 1.1*ymax])
+	ax1.axvline(x = time_1au[ishock], color = color_shock, linestyle = '--')
 
 	print("Bp_amb: ", ydata[iamb])
-	ax1.text(225,1.1*ydata[iamb],"$Bp_{amb}$: "+str(round(ydata[iamb],2))+" nT")
+	ax1.text(cme_end_time,1.2*ydata[iamb],"$Bp_{amb}$: "+str(round(ydata[iamb],2))+" nT")
 
 	ax1 = f1.add_subplot(414)
 	ydata = np.array(t1au) 
 	ax1.plot(time_1au, ydata, color = 'magenta')
-	ax1.axvline(x = cme_start_time, color = 'grey', linestyle = '--')
-	ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
+	#ax1.axvline(x = cme_start_time, color = 'grey', linestyle = '--')
+	#ax1.axvline(x = cme_end_time, color = 'grey', linestyle = '--')
 	yscale('log')
 	ymin=min(ydata[itmin:itmax])
 	ymax=max(ydata[itmin:itmax])     
@@ -271,10 +284,10 @@ def plot_vars_at_1au(df, cme_start_time, cme_duration, filename):
 	ylabel(r'T [K]')
 	xlim([tmin,tmax])
 	ylim([0.9*ymin, 1.1*ymax])
-	ax1.axvline(x = time_1au[ishock], color = 'red', linestyle = '--')
+	ax1.axvline(x = time_1au[ishock], color = color_shock, linestyle = '--')
 
 	print("T_amb: ", ydata[iamb])
-	ax1.text(225,1.1*ydata[iamb],"$T_{amb}$: "+str(round(ydata[iamb],2))+" K")
+	ax1.text(cme_end_time,1.15*ydata[iamb],"$T_{amb}$: "+str(round(ydata[iamb],2))+" K")
 
 	plt.savefig(filename)
 	#plt.show()
@@ -293,6 +306,15 @@ def plot_tracers(df, cme_start_time, cme_duration, filename):
 	time  = df['time'] 
 	tracer1 = df['tracer1']
 	tracer2 = df['tracer2']
+
+
+	# time zero will be set to cme_start_time
+
+	time_zero = cme_start_time
+	cme_start_time = cme_start_time - time_zero
+	cme_end_time   = cme_end_time  - time_zero
+
+	time = [mytime - time_zero for mytime in time]
 
 	f1 = figure(figsize=[15,5], num=1)
 	ax1 = f1.add_subplot(111)
