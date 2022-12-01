@@ -82,5 +82,7 @@ And go back to the directory with the sunRunner1D.py script
 
 You are now ready to use the script
 
-
-
+Please note that the jupyter notebook in the repository is currently not supported and not up-to-date
+   
+For HELP please email us at: pete@predsci.com, mbennun@predsci.com
+   
