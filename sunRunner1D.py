@@ -1,4 +1,4 @@
-#!/Users/pete/miniconda3/envs/psi/bin/python
+#!/Users/michal/miniconda3/envs/psi/bin/python
 
 import sys
 import os
@@ -36,7 +36,7 @@ print(' ./sunRunner1D.py -h')
 print(' Usage: ')
 print(' ./sunRunner1D.py --run <run_name> --grid <grid_size> --r1 <R1> --t0 <t0> --rho0 <rho0> --v0 <v0> --bp0 <bp0> --dv <del_V> --db <del_Bp> --dn <del_rho> --dur <duration> --prof <profile>')
 print(' Example Usage: ')
-print(' ./sunRunner1D.py --run run001 --grid medium --r1 260 --dv 1000 --db 500 --dn 0 --dur 12 --prof 0')
+print(' ./sunRunner1D.py --run run001 --grid medium --r1 260 --dv 1000 --db 500 --dn 0 --dur 10 --prof 0')
 print('################################################')
 print('################################################')
 
@@ -76,8 +76,8 @@ def main(argv):
 
 	# Perturbation at inner boundary
 
-	del_V = 500.0
-	del_B = 600.0 # in nT will be converted below to PLUTO units
+	del_V = 1000.0
+	del_B = 500.0 # in nT will be converted below to PLUTO units
 	del_RHO=0.0
 	dur = 10.0
 	prof = 0
