@@ -4,7 +4,7 @@ Welcome to sunRunner1D. This is a 1D MHD calculation of a CME pulse propagating 
 
 For a run, you need to provide, at a minimum: 
 
-1.  <run name>, e.g. run001 
+1.  run name, e.g. run001 
 2. Number of grid points: ‘low’ - 500, ‘medium’ - 1000, ‘high’ - 2000 
 3. Outer boundary (in solar radii) - default is 260 Rs
 4. CME parameters at 21.5Rs 
