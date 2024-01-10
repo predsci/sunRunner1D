@@ -1,6 +1,6 @@
 # sunRunner1D
 
-Welcome to sunRunner1D. This is a 1D MHD calculation of a CME pulse propagating (and evolving) through an ambient solar wind, the state of which can be specified by the user. The version provided here has been compiled on a Mac (and the executable should run on most of the recent versions of the OS, including Ventura). If you plan to run on a Linux computer or Windows, you will need to recompile the Pluto code, which is in the src directory (See instructions below). 
+Welcome to sunRunner1D. This is a 1D MHD calculation of a CME pulse propagating (and evolving) through an ambient solar wind, the state of which can be specified by the user. The version provided here has been compiled on a Mac (and the executable should run on most of the recent versions of the OS, up to, and including Sonoma 14.2.1). If you plan to run on a Linux computer or Windows, you will need to recompile the Pluto code, which is in the src directory (See instructions below). 
 
 For a run, you need to provide, at a minimum: 
 
