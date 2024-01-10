@@ -7,13 +7,20 @@ For a run, you need to provide, at a minimum:
 1.  run name, e.g. run001 
 2. Number of grid points: ‘low’ - 500, ‘medium’ - 1000, ‘high’ - 2000 
 3. Outer boundary (in solar radii) - default is 260 Rs
-4. CME parameters at 21.5Rs 
+4. CME parameters at 21.5Rs
+   
    a. Velocity pulse, default 500 km/s (dv)
+
    b. Magnetic Field (Bp) pulse, default 600 nT (db)
+
    c. Density pulse, default is 0.0 cm^-3 (dn)
+
    d. Duration of pulse, default is 10 hours (dur)
+
    e. Profile shape for magnetic field pulse (prof): 
+
       0 = sin^2 (default) 
+
       1 = half-sine wave
 
 Additionally, you can specify the conditions of the ambient solar wind at the inner boundary (21.5 Rs). So, if you are trying to match values observed at 1 AU, you may need to adjust them slightly to make them match better. These parameters are:
