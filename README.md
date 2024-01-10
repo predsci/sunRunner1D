@@ -23,22 +23,25 @@ For a run, you need to provide, at a minimum:
 
       1 = half-sine wave
 
-Additionally, you can specify the conditions of the ambient solar wind at the inner boundary (21.5 Rs). So, if you are trying to match values observed at 1 AU, you may need to adjust them slightly to make them match better. These parameters are:
+Additionally, you can specify the conditions of the ambient solar wind at the inner boundary (21.5 Rs). If you are trying to match values observed at 1 AU, you may need to iterate these values a few times to improve the match. You can run test cases at low resolution to explore values that work well. Note that these variables are not independent of one another. The parameters are:
 
-v0 - speed
-rho0 - density
-bp0 - transverse magnetic field
-t0 - Temperature
+   v0 - speed
+
+   rho0 - density
+
+   bp0 - transverse magnetic field
+
+   t0 - Temperature
     
-Note that, currently, the CME has a sin^2 shape but the magnetic field pulse can be set to have a sin shape with half the period so that it has an alternating sign.
+Currently, the CME has a sin^2 shape but the magnetic field pulse can be set to have a sinusoidal shape with half the period so that the transverse magnetic field can have a +/- or -/+ profile to mimic a flux rope's field variations (in a very crude way!)
 
-All output files are saved in: runs/<run_name>/output. These include diagnostic files (out.txt), which can be checked during run-time as well as the model output (as dbl binary files). Additionally, three image files:
+All output files are saved in: runs/<run_name>/output. These include diagnostic files (out.txt), which can be checked during run-time as well as the model output (as dbl binary files). Additionally, three image files are created:
 
 vars_r0.png
 vars_r0.png
 tracers.png
 
-Show the variables at the inner boundary, the variables at 1 AU, and the evolution of two tracer particles, which are launched at the leading and trailing edge of the CME pulse. 
+They show (1) the variables at the inner boundary, (2) the variables at 1 AU, and (3) the evolution of two tracer particles, which are launched at the leading and trailing edge of the CME pulse. Additionally, the arrival time of the CME's shock (if it exists) is also provided on the second set of plots. 
 
 For help use: 
 
