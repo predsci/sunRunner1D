@@ -1,6 +1,6 @@
 # sunRunner1D
 
-Welcome to sunRunner1D. This is a 1D MHD calculation of a CME pulse propagating (and evolving) through an ambient solar wind, state of which can be specified by the user. The version provided here has been compiled on a Mac (and the executable should run on most of the recent versions of the OS, including Ventura). If you plan to run on a Linux computer or Windows, you will need to recompile the Pluto code, which is in the src directory (See instructions below). 
+Welcome to sunRunner1D. This is a 1D MHD calculation of a CME pulse propagating (and evolving) through an ambient solar wind, the state of which can be specified by the user. The version provided here has been compiled on a Mac (and the executable should run on most of the recent versions of the OS, including Ventura). If you plan to run on a Linux computer or Windows, you will need to recompile the Pluto code, which is in the src directory (See instructions below). 
 
 For a run, you need to provide, at a minimum: 
 
@@ -24,7 +24,7 @@ rho0 - density
 bp0 - transverse magnetic field
 t0 - Temperature
     
-Note that, currently, the CME has a sin^2 shape but the magnetic field pulse can be set to have a sin shape with half the period so that is has an alternating sign.
+Note that, currently, the CME has a sin^2 shape but the magnetic field pulse can be set to have a sin shape with half the period so that it has an alternating sign.
 
 All output files are saved in: runs/<run_name>/output. These include diagnostic files (out.txt), which can be checked during run-time as well as the model output (as dbl binary files). Additionally, three image files:
 
@@ -82,7 +82,7 @@ And go back to the directory with the sunRunner1D.py script
 
 You are now ready to use the script.
 
-Please note that the jupyter notebook in the repository is currently not supported and not up-to-date
+Please note that the jupyter notebook in the repository is currently not supported and not up-to-date. 
    
 For help, please email us at: pete@predsci.com, mbennun@predsci.com
    
