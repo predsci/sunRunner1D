@@ -1,4 +1,4 @@
-#!/Users/michal/miniconda3/envs/psi/bin/python
+#!/usr/bin/env python3
 
 import sys
 import os
