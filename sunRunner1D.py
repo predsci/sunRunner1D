@@ -12,7 +12,7 @@ from util import *
 print('################################################')
 print('################################################')
 print(' ')
-print(' Welcome to sunRunner1D 0.00001 (04/07/21) ')
+print(' Welcome to sunRunner1D 0.00002 (01/10/2024) ')
 print(' This is a 1D MHD calculation with a simple CME ')
 print(' You will need to provide a <run name>, e.g. run001 ')
 print(' Number of grid points: ')
@@ -74,7 +74,9 @@ def main(argv):
 
 	r1=1.2 * r_fac_pluto # out boundary ~ 257 Rs 
 
-	# Perturbation at inner boundary
+	# Perturbations at inner boundary
+	# These are all relative differences above (or below) the background 
+	# values. 
 
 	del_V = 1000.0
 	del_B = 500.0 # in nT will be converted below to PLUTO units
